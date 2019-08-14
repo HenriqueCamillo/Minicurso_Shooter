@@ -12,12 +12,18 @@ public class Projectile : MonoBehaviour
     [SerializeField] int damage = 5;
 
 
+    [Tooltip("Se ativado, o projétil se movimentará para baixo")]
+    [SerializeField] bool isEnemyProjectile;
+
     /// <summary>
     /// Coloca o projétil em movimento
     /// </summary>
     private void Start()
     {
-        rBody.velocity = Vector2.up * speed;
+        if (isEnemyProjectile)
+            rBody.velocity = Vector2.down * speed;
+        else
+            rBody.velocity = Vector2.up * speed;
     }
 
     /// <summary>
@@ -26,7 +32,14 @@ public class Projectile : MonoBehaviour
     /// <param name="other">O outro colisor</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy") || other.CompareTag("Player"))
+        if (other.CompareTag("Projectile"))
+        {
+            Destroy(this.gameObject);
+        }
+        else if ((!isEnemyProjectile && other.CompareTag("Enemy")) || (isEnemyProjectile && other.CompareTag("Player")))
+        {
             other.GetComponent<Life>().Hp -= damage;
+            Destroy(this.gameObject);
+        }
     }
 }

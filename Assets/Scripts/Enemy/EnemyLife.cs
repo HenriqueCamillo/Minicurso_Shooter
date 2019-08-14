@@ -21,5 +21,6 @@ public class EnemyLife : Life
     protected override void Die()
     {
         GameManager.instance.score += score;
+        Destroy(this.gameObject);
     }
 }

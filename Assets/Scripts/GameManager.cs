@@ -11,8 +11,11 @@ public class GameManager : MonoBehaviour
     [Tooltip("Quantidade de pontos objtidos pelo jogador até o momento")]
     public int score = 0;
 
+    [Tooltip("Referência ao player, para facilitar o acesso")]
+    public GameObject player;
+
     /// <summary>
-    /// Verifica condição de singleton
+    /// Verifica condição de singleton, e busca o player caso necessário
     /// </summary>
     private void Awake()
     {
@@ -20,6 +23,10 @@ public class GameManager : MonoBehaviour
             instance = this;
         else if (instance != this)
             Destroy(this.gameObject);
+
+
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
     }
 
     /// <summary>
